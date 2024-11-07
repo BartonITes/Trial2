@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Character Input Form</title>
+  <style>
+    /* Styling and Animation */
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f2f2f2;
+      font-family: Arial, sans-serif;
+    }
+    .form-container {
+      background-color: #ffffff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      animation: fadeIn 1s ease-in-out;
+    }
+    h2 {
+      color: #333;
+      text-align: center;
+    }
+    label {
+      display: block;
+      margin: 15px 0 5px;
+    }
+    input[type="text"], textarea {
+      width: 100%;
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid #ddd;
+      outline: none;
+      transition: border-color 0.3s;
+    }
+    input[type="text"]:focus, textarea:focus {
+      border-color: #66afe9;
+    }
+    .submit-btn {
+      width: 100%;
+      padding: 10px;
+      background-color: #66afe9;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    .submit-btn:hover {
+      background-color: #558dc5;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <h2>Character Input Form</h2>
+    <form id="characterForm">
+      <label for="name">Name:</label>
+      <input type="text" id="name" name="name" required>
+
+      <label for="description">Character Description:</label>
+      <textarea id="description" name="description" rows="4" required></textarea>
+
+      <button type="submit" class="submit-btn">Submit</button>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById('characterForm').addEventListener('submit', function(event) {
+      event.preventDefault(); // Prevent the default form submission
+
+      const name = document.getElementById('name').value;
+      const description = document.getElementById('description').value;
+
+      fetch('/submit-character', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ name, description })
+      })
+      .then(response => response.json())
+      .then(data => {
+        alert(data.message); // Show the response message
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+    });
+  </script>
+</body>
+</html>
